@@ -1,29 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2024-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-#  * Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#  * Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-#  * Neither the name of NVIDIA CORPORATION nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
-# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
-# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause
 import argparse
 import os
 import re
@@ -90,15 +67,14 @@ def update_copyright_year(
             f.write(updated_content)
 
 
-def update_and_get_license(license_path: Optional[str] = None) -> str:
+def get_license(license_path: Optional[str] = None) -> str:
     """
-    Updates the copyright year in the LICENSE file if necessary and then
-    returns its contents.
+    Returns the contents of the LICENSE file.
 
-    Note: LICENSE file maintains a year range if it has an older starting year.
+    Note: The LICENSE file itself is never modified by this hook; its
+    copyright year is maintained manually by each repository.
     """
     license_path = license_path or get_license_path()
-    update_copyright_year(license_path)
 
     with open(license_path, "r") as license_file:
         return license_file.read()
@@ -106,7 +82,7 @@ def update_and_get_license(license_path: Optional[str] = None) -> str:
 
 def load_license_text() -> None:
     global LICENSE_TEXT
-    LICENSE_TEXT = update_and_get_license()
+    LICENSE_TEXT = get_license()
 
 
 #
