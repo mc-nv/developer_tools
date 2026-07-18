@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2018-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
 
 """Insert / maintain / migrate to an SPDX license header on source files.
@@ -12,7 +12,7 @@ SPDX *the first time it is touched* -- a low-risk, incremental rollout.
 The header uses a copyright *year range*, mirroring the repo convention (the
 ``LICENSE`` file and ``add_copyright.py`` use ``<start>-<current>``)::
 
-    # SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+    # SPDX-FileCopyrightText: Copyright (c) 2018-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
     # SPDX-License-Identifier: BSD-3-Clause
 
 Per file, the hook does exactly one of:
@@ -42,10 +42,10 @@ _LICENSE_ID = "BSD-3-Clause"
 
 # Start year of the project-wide LICENSE (used only when inserting into a file
 # that has no NVIDIA copyright at all).
-_LICENSE_YEAR_PAT = re.compile(r"Copyright \(c\) (\d{4})(?:-\d{4})?, NVIDIA")
+_LICENSE_YEAR_PAT = re.compile(r"Copyright \(c\) (\d{4})(?:-\d{4})?,? NVIDIA")
 # Existing SPDX copyright line (for year maintenance).
 _SPDX_YEAR_PAT = re.compile(
-    r"(SPDX-FileCopyrightText: Copyright \(c\) )(\d{4})(?:-\d{4})?(, NVIDIA)"
+    r"(SPDX-FileCopyrightText: Copyright \(c\) )(\d{4})(?:-\d{4})?(,? NVIDIA)"
 )
 # First line of a legacy long-form NVIDIA BSD header (captures comment prefix +
 # start year). The block ends at the standard BSD "SUCH DAMAGE" line.
@@ -75,7 +75,7 @@ def _license_start_year():
 
 def _spdx_lines(prefix, years):
     return (
-        "{p} SPDX-FileCopyrightText: Copyright (c) {y}, NVIDIA CORPORATION "
+        "{p} SPDX-FileCopyrightText: Copyright (c) {y} NVIDIA CORPORATION "
         "& AFFILIATES. All rights reserved.\n"
         "{p} SPDX-License-Identifier: {lic}\n".format(
             p=prefix, y=years, lic=_LICENSE_ID

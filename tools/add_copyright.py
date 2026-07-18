@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-3-Clause
 import argparse
 import os
@@ -12,7 +12,7 @@ from typing import Callable, Dict, Optional, Sequence
 current_year = str(datetime.now().year)
 
 COPYRIGHT_YEAR_PAT = re.compile(
-    r"Copyright( \(c\))? (\d{4})?-?(\d{4}), NVIDIA CORPORATION"
+    r"Copyright( \(c\))? (\d{4})?-?(\d{4})(,?) NVIDIA CORPORATION"
 )
 
 LICENSE_TEXT = ""
@@ -58,7 +58,7 @@ def update_copyright_year(
         new_copyright += f"{min_year}-{current_year}"
     else:
         new_copyright += f"{current_year}"
-    new_copyright += ", NVIDIA CORPORATION"
+    new_copyright += f"{match.groups()[3]} NVIDIA CORPORATION"
 
     updated_content = COPYRIGHT_YEAR_PAT.sub(new_copyright, content)
 
@@ -346,6 +346,11 @@ def make_copyright_text(text):
         (
             make_copyright_text("(c) 2018-2023, NVIDIA CORPORATION"),
             make_copyright_text(f"(c) 2018-{current_year}, NVIDIA CORPORATION"),
+        ),
+        # Comma-less (Legal-standard SPDX boilerplate) form is preserved:
+        (
+            make_copyright_text("(c) 2018 NVIDIA CORPORATION"),
+            make_copyright_text(f"(c) 2018-{current_year} NVIDIA CORPORATION"),
         ),
     ],
 )
